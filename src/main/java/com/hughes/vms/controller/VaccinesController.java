@@ -1,25 +1,19 @@
 package com.hughes.vms.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.hughes.vms.model.Vaccines;
 import com.hughes.vms.services.VaccinesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class VaccinesController {
+
     @Autowired
-    VaccinesService vaccineService;
+    VaccinesService vaccinesService;
 
-    @RequestMapping(value="/vaccines", method=RequestMethod.GET)
-    public List<Vaccines> readVaccines() {
-        return vaccineService.getVaccines();
+    @PostMapping("/vaccines")
+    public Vaccines insertVaccine(@RequestBody Vaccines vaccine) {
+        return vaccinesService.insertVaccine(vaccine);
     }
-
-    // You can add more methods here for handling other operations like creating, updating, and deleting vaccines
 }

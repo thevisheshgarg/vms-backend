@@ -1,21 +1,17 @@
 package com.hughes.vms.services;
 
-import java.util.List;
-
+import com.hughes.vms.model.Vaccines;
+import com.hughes.vms.repository.VaccinesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hughes.vms.model.Vaccines;
-import com.hughes.vms.repository.VaccinesRepository;
-
 @Service
 public class VaccinesService {
+
     @Autowired
-    VaccinesRepository vaccineRepository;
+    VaccinesRepository vaccinesRepository;
 
-    public List<Vaccines> getVaccines() {
-        return vaccineRepository.findAll();
+    public Vaccines insertVaccine(Vaccines vaccine) {
+        return vaccinesRepository.save(vaccine);
     }
-
-    // You can add more methods here for handling other operations like creating, updating, and deleting vaccines
 }

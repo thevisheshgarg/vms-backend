@@ -1,8 +1,12 @@
 package com.hughes.vms.controller;
 
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +22,24 @@ public class AppointmentsController {
 
     @RequestMapping(value="/appointments", method=RequestMethod.GET)
     public List<Appointments> readAppointments() {
-        return appointmentService.getAppointments();
+        return appointmentService.getAllAppointments();
+    }
+    @RequestMapping(value = "/appointments/{centerId}", method = RequestMethod.GET)
+    public List<Appointments> readAppointmentsByCenterId(@PathVariable Integer centerId) {
+        return appointmentService.getAppointmentByCenterID(centerId);
+//                .orElseThrow(() -> new RuntimeException("Appointments not found for center with id: " + centerId));
     }
 
-    // You can add more methods here for handling other CRUD operations for appointments
+
+    @RequestMapping(value = "/appointments/phone/{phoneNumber}", method = RequestMethod.GET)
+    public Appointments readPatientByPhoneNo(@PathVariable String phoneNumber) {
+        Optional<Appointments> appointment = appointmentService.getByPhoneNumber(phoneNumber);
+        return appointment.orElseThrow(() -> new RuntimeException("Appointment not found for phone number: " + phoneNumber));
+    }
+
+
+    @RequestMapping(value = "/appointments", method = RequestMethod.POST)
+    public Appointments registerAppointment(@RequestBody Appointments app) {
+        return appointmentService.scheduleAppointment(app.getPatientId(), app.getCenterId(), app.getVaccineId(), app.getAppointmentDate());
+    }
 }
